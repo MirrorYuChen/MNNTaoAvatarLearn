@@ -65,9 +65,9 @@ void Model::InitEncoder (void *model_data,
     os << "---encoder---\n";
     PrintModelMetadata(os, meta_data);
 #if __OHOS__
-    LogError("{}", os.str());
+    LogInfo("{}", os.str());
 #else
-    LogError("{}", os.str());
+    LogInfo("{}", os.str());
 #endif
   }
 
@@ -89,9 +89,9 @@ void Model::InitEncoder (void *model_data,
         os << i << " ";
       }
 #if __OHOS__
-      LogError("{}\n", os.str().);
+      LogInfo("{}\n", os.str().);
 #else
-      LogError("{}", os.str());
+      LogInfo("{}", os.str());
 #endif
     };
     print(encoder_dims_, "encoder_dims");
@@ -103,8 +103,8 @@ void Model::InitEncoder (void *model_data,
     MIRROR_LOGE("T: %{public}d", T_);
     MIRROR_LOGE("decode_chunk_len_: %{public}d", decode_chunk_len_);
 #else
-    LogError("T: {}", T_);
-    LogError("decode_chunk_len_: {}", decode_chunk_len_);
+    LogInfo("T: {}", T_);
+    LogInfo("decode_chunk_len_: {}", decode_chunk_len_);
 #endif
   }
 }
@@ -168,9 +168,9 @@ void Model::InitJoiner (void *model_data,
     os << "---joiner---\n";
     PrintModelMetadata(os, meta_data);
 #if __OHOS__
-    LogError("{}", os.str());
+    LogInfo("{}", os.str());
 #else
-    LogError("{}", os.str());
+    LogInfo("{}", os.str());
 #endif
   }
 }

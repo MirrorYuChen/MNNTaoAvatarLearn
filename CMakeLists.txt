@@ -59,7 +59,7 @@ target_link_libraries(${PROJECT_NAME} ${LIBRARIES_TO_LINK})
 if (MSVC)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
   target_compile_options(${PROJECT_NAME} PUBLIC
-    $<$<COMPILE_LANGUAGE:CXX>:/Zc:preprocessor;/Zc:__cplusplus>)
+    $<$<COMPILE_LANGUAGE:CXX>:/Zc:preprocessor;/Zc:__cplusplus;/utf-8>)
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/diagnostics:classic>)
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/wd4251>)
 else(MSVC)
