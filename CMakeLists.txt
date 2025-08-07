@@ -28,6 +28,12 @@ include(kaldi-native-fbank)
 set(LIBRARIES_TO_LINK "")
 list(APPEND LIBRARIES_TO_LINK kaldi-native-fbank-core)
 
+set(MNN_LIB_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdLibs/MNN)
+message(STATUS "MNN's dir: ${MNN_LIB_DIR}")
+include_directories(${MNN_LIB_DIR}/include)
+link_directories(${MNN_LIB_DIR}/lib)
+list(APPEND LIBRARIES_TO_LINK MNN)
+
 include_directories(
   ${INC_DIR}
   ${SRC_DIR}
@@ -65,6 +71,7 @@ endif (MSVC)
 
 set(TEST_LIST
   TestParseOptions
+  TestModel
 )
 
 foreach(TEST ${TEST_LIST})
