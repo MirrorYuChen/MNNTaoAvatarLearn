@@ -66,7 +66,7 @@ for a list of pre-trained models to download.
   }
   std::string result;
   if (MnnASRSession.Process(wav_filenames, result)) {
-    std::cout << "prcessed succeed." << std::endl;
+    std::cout << "processed succeed." << std::endl;
     std::cout << result << std::endl;
   } else {
     std::cout << "processed failed." << std::endl;
