@@ -1,4 +1,4 @@
- /*
+  /*
  * @Author: chenjingyu
  * @Date: 2025-08-08 11:04:15
  * @Contact: 2458006366@qq.com
@@ -241,9 +241,6 @@ private:
 
 private:
   RecognizerConfig cfg_;
-  std::vector<std::vector<int32_t>> hotwords_;
-  std::vector<float> boost_scores_;
-  ContextGraphPtr hotwords_graph_;
   std::unique_ptr<Model> model_;
   std::unique_ptr<GreedySearchDecoder> decoder_;
   Endpoint endpoint_;

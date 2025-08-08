@@ -1,4 +1,4 @@
- /*
+  /*
  * @Author: chenjingyu
  * @Date: 2025-08-08 09:58:00
  * @Contact: 2458006366@qq.com
@@ -65,9 +65,6 @@ class Stream::Impl {
   int32_t start_frame_index_ = 0;     // never reset
   int32_t segment_ = 0;
   DecoderResult result_;
-  KeywordResult prev_keyword_result_;
-  KeywordResult keyword_result_;
-  KeywordResult empty_keyword_result_;
   std::vector<MNN::Express::VARP> states_;  // states for transducer or ctc models
 };
 
