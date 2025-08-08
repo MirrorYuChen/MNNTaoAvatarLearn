@@ -7,8 +7,49 @@
 #include "Core/Model.h"
 #include "Core/Ops.h"
 #include "Base/Logger.h"
+#include "Utils/FileUtils.h"
 
 NAMESPACE_BEGIN
+void ModelConfig::Register(ParseOptions *po) {
+  po->Register("encoder", &encoder, "Path to encoder.mnn");
+  po->Register("decoder", &decoder, "Path to decoder.mnn");
+  po->Register("joiner", &joiner, "Path to joiner.mnn");
+
+  po->Register("tokens", &tokens, "Path to tokens.txt");
+  po->Register("num-threads", &num_threads,
+              "Number of threads to run the neural network");
+  po->Register("warm-up", &warm_up,
+                "Number of warm-up to run the onnxruntime"
+                "Valid vales are: zipformer2");
+  po->Register("debug", &debug,
+                "true to print model information while loading it.");
+}
+
+bool ModelConfig::Validate() const {
+  if (!FileExists(encoder)) {
+    LogError("encoder: '{}' does not exists", encoder);
+    return false;
+  }
+  if (!FileExists(decoder)) {
+    LogError("decoder: '{}' does not exists", decoder);
+    return false;
+  }
+  if (!FileExists(joiner)) {
+    LogError("joiner: '{}' does not exists", joiner);
+    return false;
+  }
+  return true;
+}
+
+std::string ModelConfig::ToString() const {
+  std::ostringstream os;
+  os << "ModelConfig(";
+  os << "encoder=\"" << encoder << "\", ";
+  os << "decoder=\"" << decoder << "\", ";
+  os << "joiner=\"" << joiner << "\")";
+  return os.str();
+}
+
 DecoderResult::DecoderResult (
   const DecoderResult &other)
   : DecoderResult() {
