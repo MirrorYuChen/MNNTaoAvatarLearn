@@ -118,6 +118,8 @@
 #define LError 4
 #define LCritical 5
 
+#define DELIMITER_LINE "==================="
+
 #define LogFormat(LEVEL, fmt, ...)                                             \
   NAMESPACE::getLogger()->log(spdlog::level::level_enum(LEVEL),                \
                               "[{}: {}] " fmt, FILENAME, __LINE__,             \

@@ -74,6 +74,7 @@ set(TEST_LIST
   TestParseOptions
   TestMnnASRSession
   TestMnnLLMSession
+  TestMnnTTSSession
 )
 
 foreach(TEST ${TEST_LIST})
