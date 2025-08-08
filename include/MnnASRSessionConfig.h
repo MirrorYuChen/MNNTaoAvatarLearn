@@ -2,7 +2,7 @@
  * @Author: chenjingyu
  * @Date: 2025-08-07 14:49:44
  * @Contact: 2458006366@qq.com
- * @Description: RecognizerConfig
+ * @Description: MnnASRSessionConfig
  */
 #pragma once
 
@@ -13,7 +13,7 @@
 #include <string>
 
 NAMESPACE_BEGIN
-struct API RecognizerResult {
+struct API MnnASRSessionResult {
   /// Recognition results.
   /// For English, it consists of space separated words.
   /// For Chinese, it consists of Chinese words without spaces.
@@ -201,9 +201,9 @@ struct API EndpointConfig {
   [[nodiscard]] std::string ToString () const;
 };
 
-struct API RecognizerConfig {
-  RecognizerConfig() = default;
-  explicit RecognizerConfig(
+struct API MnnASRSessionConfig {
+  MnnASRSessionConfig() = default;
+  explicit MnnASRSessionConfig(
     FeatureExtractorConfig feature_extractor_config,
     ModelConfig model_config,
     EndpointConfig endpoint_config,

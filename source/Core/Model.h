@@ -7,7 +7,7 @@
 #pragma once
 
 #include "Api.h"
-#include "RecognizerConfig.h"
+#include "MnnASRSessionConfig.h"
 #include "Core/Hypothesis.h"
 #include "Core/MNNUtils.h"
 

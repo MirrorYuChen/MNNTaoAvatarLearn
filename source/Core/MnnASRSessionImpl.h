@@ -2,7 +2,7 @@
  * @Author: chenjingyu
  * @Date: 2025-08-08 11:04:15
  * @Contact: 2458006366@qq.com
- * @Description: RecognizerImpl
+ * @Description: MnnASRSessionImpl
  */
 #pragma once
 
@@ -17,18 +17,18 @@
 #include <utility>
 #include <vector>
 
-#include "Recognizer.h"
+#include "MnnASRSession.h"
 #include "Base/Endpoint.h"
 #include "Core/Stream.h"
 #include "Base/SymbolTable.h"
 #include "Core/GreedySearchDecoder.h"
 
 NAMESPACE_BEGIN
-static RecognizerResult Convert(const DecoderResult &src,
+static MnnASRSessionResult Convert(const DecoderResult &src,
                                const SymbolTable &sym_table,
                                float frame_shift_ms, int32_t subsampling_factor,
                                int32_t segment, int32_t frames_since_start) {
-  RecognizerResult r;
+  MnnASRSessionResult r;
   r.tokens.reserve(src.tokens.size());
   r.timestamps.reserve(src.tokens.size());
 
@@ -69,9 +69,9 @@ static RecognizerResult Convert(const DecoderResult &src,
   return r;
 }
 
-class RecognizerImpl {
+class MnnASRSessionImpl {
 public:
-  explicit RecognizerImpl(const RecognizerConfig &cfg) :
+  explicit MnnASRSessionImpl(const MnnASRSessionConfig &cfg) :
     cfg_(cfg), model_(Model::Create(cfg.model_config)),
     endpoint_(cfg.endpoint_config) {
     if (!cfg.model_config.tokens_buf.empty()) {
@@ -88,8 +88,8 @@ public:
     );
   }
 
-  static std::unique_ptr<RecognizerImpl> Create(const RecognizerConfig &cfg) {
-    return std::make_unique<RecognizerImpl>(cfg);
+  static std::unique_ptr<MnnASRSessionImpl> Create(const MnnASRSessionConfig &cfg) {
+    return std::make_unique<MnnASRSessionImpl>(cfg);
   }
 
   std::unique_ptr<Stream> CreateStream() const  {
@@ -162,7 +162,7 @@ public:
     }
   }
 
-  RecognizerResult GetResult(Stream *s) const  {
+  MnnASRSessionResult GetResult(Stream *s) const  {
     DecoderResult decoder_result = s->GetResult();
     decoder_->StripLeadingBlanks(&decoder_result);
 
@@ -236,7 +236,7 @@ private:
   }
 
 private:
-  RecognizerConfig cfg_;
+  MnnASRSessionConfig cfg_;
   std::unique_ptr<Model> model_;
   std::unique_ptr<GreedySearchDecoder> decoder_;
   Endpoint endpoint_;

@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "ParseOptions.h"
-#include "RecognizerConfig.h"
+#include "MnnASRSessionConfig.h"
 
 NAMESPACE_BEGIN
 class ParseOptions;

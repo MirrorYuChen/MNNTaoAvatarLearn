@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-#include "RecognizerConfig.h"
+#include "MnnASRSessionConfig.h"
 
 NAMESPACE_BEGIN
 class FeatureExtractor {

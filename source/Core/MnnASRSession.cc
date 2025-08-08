@@ -2,9 +2,9 @@
  * @Author: chenjingyu
  * @Date: 2025-08-08 09:51:09
  * @Contact: 2458006366@qq.com
- * @Description: Recognizer
+ * @Description: MnnASRSession
  */
-#include "Recognizer.h"
+#include "MnnASRSession.h"
 
 #include <algorithm>
 #include <cassert>
@@ -15,7 +15,7 @@
 #include <vector>
 
 #include "Base/WaveReader.h"
-#include "Core/RecognizerImpl.h"
+#include "Core/MnnASRSessionImpl.h"
 #include "Base/Logger.h"
 
 #if __ANDROID_API__ >= 9
@@ -37,12 +37,12 @@ typedef struct {
   float elapsed_seconds;
 } StreamWrapper;
 
-Recognizer::Recognizer(const RecognizerConfig &config)
-    : impl_(RecognizerImpl::Create(config)) {}
+MnnASRSession::MnnASRSession(const MnnASRSessionConfig &config)
+    : impl_(MnnASRSessionImpl::Create(config)) {}
 
-Recognizer::~Recognizer() = default;
+MnnASRSession::~MnnASRSession() = default;
 
-bool Recognizer::Process(const std::vector<std::string> &wav_filenames, std::string &result) {
+bool MnnASRSession::Process(const std::vector<std::string> &wav_filenames, std::string &result) {
   std::vector<StreamWrapper> ss;
   const auto begin = std::chrono::steady_clock::now();
   std::vector<float> durations;

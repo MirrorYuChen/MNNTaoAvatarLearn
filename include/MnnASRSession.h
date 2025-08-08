@@ -2,7 +2,7 @@
  * @Author: chenjingyu
  * @Date: 2025-08-08 09:50:56
  * @Contact: 2458006366@qq.com
- * @Description: Recognizer
+ * @Description: MnnASRSession
  */
 #pragma once
 
@@ -12,21 +12,21 @@
 #include <string>
 #include <vector>
 
-#include "RecognizerConfig.h"
+#include "MnnASRSessionConfig.h"
 
 NAMESPACE_BEGIN
-class RecognizerImpl;
+class MnnASRSessionImpl;
 
-class API Recognizer {
+class API MnnASRSession {
 public:
-  explicit Recognizer(const RecognizerConfig &config);
+  explicit MnnASRSession(const MnnASRSessionConfig &config);
 
-  ~Recognizer();
+  ~MnnASRSession();
 
   bool Process(const std::vector<std::string> &wav_filenames, std::string &result);
 
 private:
-  std::unique_ptr<RecognizerImpl> impl_;
+  std::unique_ptr<MnnASRSessionImpl> impl_;
 };
 
 NAMESPACE_END

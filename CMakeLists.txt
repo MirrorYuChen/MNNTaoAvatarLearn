@@ -71,8 +71,7 @@ endif (MSVC)
 
 set(TEST_LIST
   TestParseOptions
-  TestModel
-  TestRecognizer
+  TestMnnASRSession
 )
 
 foreach(TEST ${TEST_LIST})

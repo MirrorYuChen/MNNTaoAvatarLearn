@@ -5,7 +5,7 @@
  * @Description: TestParseOptions
  */
 #include "ParseOptions.h"
-#include "RecognizerConfig.h"
+#include "MnnASRSessionConfig.h"
 #include <sstream>
 
 using namespace NAMESPACE;
@@ -26,7 +26,7 @@ Usage:
 )usage";
 
   ParseOptions po(kUsageMessage);
-  RecognizerConfig cfg;
+  MnnASRSessionConfig cfg;
   cfg.Register(&po);
   po.Read(argc, argv);
 

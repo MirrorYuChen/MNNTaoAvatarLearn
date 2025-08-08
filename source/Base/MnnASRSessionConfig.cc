@@ -2,9 +2,9 @@
  * @Author: chenjingyu
  * @Date: 2025-08-07 14:49:59
  * @Contact: 2458006366@qq.com
- * @Description: RecognizerConfig
+ * @Description: MnnASRSessionConfig
  */
-#include "RecognizerConfig.h"
+#include "MnnASRSessionConfig.h"
 
 #include <algorithm>
 #include <cassert>
@@ -16,7 +16,7 @@
 
 NAMESPACE_BEGIN
 namespace {
-/// Helper for `OnlineRecognizerResult::AsJsonString()`
+/// Helper for `OnlineMnnASRSessionResult::AsJsonString()`
 template <typename T>
 std::string VecToString(const std::vector<T> &vec, int32_t precision = 6) {
   std::ostringstream oss;
@@ -33,7 +33,7 @@ std::string VecToString(const std::vector<T> &vec, int32_t precision = 6) {
   return oss.str();
 }
 
-/// Helper for `OnlineRecognizerResult::AsJsonString()`
+/// Helper for `OnlineMnnASRSessionResult::AsJsonString()`
 template <>  // explicit specialization for T = std::string
 std::string VecToString<std::string>(const std::vector<std::string> &vec,
                                      int32_t) {  // ignore 2nd arg
@@ -49,7 +49,7 @@ std::string VecToString<std::string>(const std::vector<std::string> &vec,
 }
 }  // namespace
 
-std::string RecognizerResult::AsJsonString() const {
+std::string MnnASRSessionResult::AsJsonString() const {
   std::ostringstream os;
   os << "{ ";
   os << "\"text\": " << std::quoted(text) << ", ";
@@ -64,7 +64,7 @@ std::string RecognizerResult::AsJsonString() const {
   return os.str();
 }
 
-void RecognizerConfig::Register(ParseOptions *po) {
+void MnnASRSessionConfig::Register(ParseOptions *po) {
   feature_extractor_config.Register(po);
   model_config.Register(po);
   endpoint_config.Register(po);
@@ -81,14 +81,14 @@ void RecognizerConfig::Register(ParseOptions *po) {
                "Temperature scale for confidence computation in decoding.");
 }
 
-bool RecognizerConfig::Validate() const {
+bool MnnASRSessionConfig::Validate() const {
   return model_config.Validate();
 }
 
-std::string RecognizerConfig::ToString() const {
+std::string MnnASRSessionConfig::ToString() const {
   std::ostringstream os;
 
-  os << "OnlineRecognizerConfig(";
+  os << "OnlineMnnASRSessionConfig(";
   os << "feature_extractor_config=" << feature_extractor_config.ToString() << ", ";
   os << "model_config=" << model_config.ToString() << ", ";
   os << "endpoint_config=" << endpoint_config.ToString() << ", ";

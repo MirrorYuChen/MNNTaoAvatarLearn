@@ -2,9 +2,9 @@
  * @Author: chenjingyu
  * @Date: 2025-08-08 13:08:18
  * @Contact: 2458006366@qq.com
- * @Description: TestRecognizer
+ * @Description: TestMnnASRSession
  */
-#include "Recognizer.h"
+#include "MnnASRSession.h"
 #include "ParseOptions.h"
 #include "Base/WaveReader.h"
 
@@ -19,7 +19,7 @@ Usage:
 
 (1) Streaming transducer
 
-  ./TestRecognizer \
+  ./TestMnnASRSession \
     --tokens=../data/tokens.txt \
     --encoder=../data/encoder.mnn \
     --decoder=../data/decoder.mnn \
@@ -41,7 +41,7 @@ for a list of pre-trained models to download.
 )usage";
 
   ParseOptions po(kUsageMessage);
-  RecognizerConfig config;
+  MnnASRSessionConfig config;
 
   config.Register(&po);
 
@@ -59,13 +59,13 @@ for a list of pre-trained models to download.
     return -1;
   }
 
-  Recognizer recognizer(config);
+  MnnASRSession MnnASRSession(config);
   std::vector<std::string> wav_filenames;
   for (int32_t i = 1; i <= po.NumArgs(); ++i) {
     wav_filenames.emplace_back(po.GetArg(i));
   }
   std::string result;
-  if (recognizer.Process(wav_filenames, result)) {
+  if (MnnASRSession.Process(wav_filenames, result)) {
     std::cout << "prcessed succeed." << std::endl;
     std::cout << result << std::endl;
   } else {
