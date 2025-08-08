@@ -20,12 +20,12 @@ Usage:
 (1) Streaming transducer
 
   ./TestMnnASRSession \
-    --tokens=../data/tokens.txt \
-    --encoder=../data/encoder.mnn \
-    --decoder=../data/decoder.mnn \
-    --joiner=../data/joiner.mnn \
+    --tokens=../data/asr/tokens.txt \
+    --encoder=../data/asr/encoder.mnn \
+    --decoder=../data/asr/decoder.mnn \
+    --joiner=../data/asr/joiner.mnn \
     --num-threads=2 \
-    /path/to/foo.wav [bar.wav foobar.wav ...]
+    ../data/asr/1.wav [bar.wav foobar.wav ...]
 
 Note: It supports decoding multiple files in batches
 

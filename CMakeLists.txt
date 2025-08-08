@@ -38,6 +38,7 @@ include_directories(
   ${INC_DIR}
   ${SRC_DIR}
   ${3RD_DIR}/spdlog
+  ${3RD_DIR}/nlohmann
 )
 
 # src files
@@ -72,6 +73,7 @@ endif (MSVC)
 set(TEST_LIST
   TestParseOptions
   TestMnnASRSession
+  TestMnnLLMSession
 )
 
 foreach(TEST ${TEST_LIST})
