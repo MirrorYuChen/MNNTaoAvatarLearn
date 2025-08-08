@@ -55,9 +55,6 @@ std::string RecognizerResult::AsJsonString() const {
   os << "\"text\": " << std::quoted(text) << ", ";
   os << "\"tokens\": " << VecToString(tokens) << ", ";
   os << "\"timestamps\": " << VecToString(timestamps, 2) << ", ";
-  os << "\"ys_probs\": " << VecToString(ys_probs, 6) << ", ";
-  os << "\"lm_probs\": " << VecToString(lm_probs, 6) << ", ";
-  os << "\"context_scores\": " << VecToString(context_scores, 6) << ", ";
   os << "\"segment\": " << segment << ", ";
   os << "\"words\": " << VecToString(words, 0) << ", ";
   os << "\"start_time\": " << std::fixed << std::setprecision(2) << start_time
@@ -74,8 +71,6 @@ void RecognizerConfig::Register(ParseOptions *po) {
 
   po->Register("enable-endpoint", &enable_endpoint,
                "True to enable endpoint detection. False to disable it.");
-  po->Register("max-active-paths", &max_active_paths,
-               "beam size used in modified beam search.");
   po->Register("blank-penalty", &blank_penalty,
                "The penalty applied on blank symbol during decoding. "
                "Note: It is a positive value. "
@@ -98,9 +93,6 @@ std::string RecognizerConfig::ToString() const {
   os << "model_config=" << model_config.ToString() << ", ";
   os << "endpoint_config=" << endpoint_config.ToString() << ", ";
   os << "enable_endpoint=" << (enable_endpoint ? "True" : "False") << ", ";
-  os << "max_active_paths=" << max_active_paths << ", ";
-  os << "hotwords_score=" << hotwords_score << ", ";
-  os << "hotwords_file=\"" << hotwords_file << "\", ";
   os << "blank_penalty=" << blank_penalty << ", ";
   os << "temperature_scale=" << temperature_scale << "\")";
 

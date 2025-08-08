@@ -33,11 +33,7 @@ DecoderResult &DecoderResult::operator= (
 
   frame_offset = other.frame_offset;
   timestamps = other.timestamps;
-
   ys_probs = other.ys_probs;
-  lm_probs = other.lm_probs;
-  context_scores = other.context_scores;
-
   return *this;
 }
 
@@ -61,11 +57,7 @@ DecoderResult &DecoderResult::operator= (
 
   frame_offset = other.frame_offset;
   timestamps = std::move(other.timestamps);
-
   ys_probs = std::move(other.ys_probs);
-  lm_probs = std::move(other.lm_probs);
-  context_scores = std::move(other.context_scores);
-
   return *this;
 }
 

@@ -24,10 +24,7 @@ struct API DecoderResult {
 
   /// timestamps[i] contains the output frame index where tokens[i] is decoded.
   std::vector<int32_t> timestamps;
-
   std::vector<float> ys_probs;
-  std::vector<float> lm_probs;
-  std::vector<float> context_scores;
 
   // Cache decoder_out for endpointing
   MNN::Express::VARP decoder_out;
@@ -45,26 +42,6 @@ struct API DecoderResult {
   DecoderResult(DecoderResult &&other) noexcept;
 
   DecoderResult &operator=(DecoderResult &&other) noexcept;
-};
-
-struct API KeywordResult {
-  /// Number of frames after subsampling we have decoded so far
-  int32_t frame_offset = 0;
-
-  /// The decoded token IDs for keywords
-  std::vector<int> tokens;
-
-  /// The triggered keyword
-  std::string keyword;
-
-  /// number of trailing blank frames decoded so far
-  int32_t num_trailing_blanks = 0;
-
-  /// timestamps[i] contains the output frame index where tokens[i] is decoded.
-  std::vector<int32_t> timestamps;
-
-  // used only in modified beam_search
-  Hypotheses hyps;
 };
 
 class API Model {
