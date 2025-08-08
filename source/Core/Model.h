@@ -9,17 +9,75 @@
 #include "Api.h"
 #include "Base/RecognizerConfig.h"
 #include "Core/MNNUtils.h"
+#include "Core/Hypothesis.h"
 
 NAMESPACE_BEGIN
+struct API DecoderResult {
+  /// Number of frames after subsampling we have decoded so far
+  int32_t frame_offset = 0;
+
+  /// The decoded token IDs so far
+  std::vector<int> tokens;
+
+  /// number of trailing blank frames decoded so far
+  int32_t num_trailing_blanks = 0;
+
+  /// timestamps[i] contains the output frame index where tokens[i] is decoded.
+  std::vector<int32_t> timestamps;
+
+  std::vector<float> ys_probs;
+  std::vector<float> lm_probs;
+  std::vector<float> context_scores;
+
+  // Cache decoder_out for endpointing
+  MNN::Express::VARP decoder_out;
+
+  // used only in modified beam_search
+  Hypotheses hyps;
+
+  DecoderResult()
+      : tokens{}, num_trailing_blanks(0), decoder_out{nullptr}, hyps{} {}
+
+  DecoderResult(const DecoderResult &other);
+
+  DecoderResult &operator=(const DecoderResult &other);
+
+  DecoderResult(DecoderResult &&other) noexcept;
+
+  DecoderResult &operator=(DecoderResult &&other) noexcept;
+};
+
+struct API KeywordResult {
+  /// Number of frames after subsampling we have decoded so far
+  int32_t frame_offset = 0;
+
+  /// The decoded token IDs for keywords
+  std::vector<int> tokens;
+
+  /// The triggered keyword
+  std::string keyword;
+
+  /// number of trailing blank frames decoded so far
+  int32_t num_trailing_blanks = 0;
+
+  /// timestamps[i] contains the output frame index where tokens[i] is decoded.
+  std::vector<int32_t> timestamps;
+
+  // used only in modified beam_search
+  Hypotheses hyps;
+};
+
 class API Model {
 public:
   explicit Model (const ModelConfig &cfg);
   ~Model ();
 
-  std::vector<MNN::Express::VARP> StackStates (
+  static std::unique_ptr<Model> Create(const ModelConfig &cfg);
+
+  [[nodiscard]] std::vector<MNN::Express::VARP> StackStates (
     const std::vector<std::vector<MNN::Express::VARP> > &states) const;
 
-  std::vector<std::vector<MNN::Express::VARP> > UnStackStates (
+  [[nodiscard]] std::vector<std::vector<MNN::Express::VARP> > UnStackStates (
     const std::vector<MNN::Express::VARP> &states) const;
 
   std::vector<MNN::Express::VARP> GetEncoderInitStates ();
@@ -32,14 +90,14 @@ public:
 
   MNN::Express::VARP RunJoiner (MNN::Express::VARP encoder_out, MNN::Express::VARP decoder_out);
 
-  int32_t ContextSize () const { return context_size_; }
+  [[nodiscard]] int32_t ContextSize () const { return context_size_; }
 
-  int32_t ChunkSize () const { return T_; }
+  [[nodiscard]] int32_t ChunkSize () const { return T_; }
 
-  int32_t ChunkShift () const { return decode_chunk_len_; }
+  [[nodiscard]]int32_t ChunkShift () const { return decode_chunk_len_; }
 
-  int32_t VocabSize () const { return vocab_size_; }
-  MNNAllocator *Allocator () { return allocator_; }
+  [[nodiscard]]int32_t VocabSize () const { return vocab_size_; }
+  [[nodiscard]] MNNAllocator *Allocator () const { return allocator_; }
 
 private:
   void InitEncoder (void *model_data, size_t model_data_length);
@@ -89,5 +147,39 @@ private:
   int32_t context_size_ = 0;
   int32_t vocab_size_ = 0;
 };
+
+static MNN::Express::VARP BuildDecoderInput(Model *model,
+    const std::vector<DecoderResult> &results) {
+  int32_t batch_size = static_cast<int32_t>(results.size());
+  int32_t context_size = model->ContextSize();
+  std::array<int, 2> shape{batch_size, context_size};
+  MNN::Express::VARP decoder_input = MNNUtilsCreateTensor<int>(
+      model->Allocator(), shape.data(), shape.size());
+  int *p = decoder_input->writeMap<int>();
+
+  for (const auto &r : results) {
+    const int *begin = r.tokens.data() + r.tokens.size() - context_size;
+    const int *end = r.tokens.data() + r.tokens.size();
+    std::copy(begin, end, p);
+    p += context_size;
+  }
+  return decoder_input;
+}
+
+static MNN::Express::VARP BuildDecoderInput(
+  Model *model, const std::vector<Hypothesis> &hyps) {
+  int32_t batch_size = static_cast<int32_t>(hyps.size());
+  int32_t context_size = model->ContextSize();
+  std::array<int, 2> shape{batch_size, context_size};
+  MNN::Express::VARP decoder_input = MNNUtilsCreateTensor<int>(
+      model->Allocator(), shape.data(), shape.size());
+  int *p = decoder_input->writeMap<int>();
+
+  for (const auto &h : hyps) {
+    std::copy(h.ys.end() - context_size, h.ys.end(), p);
+    p += context_size;
+  }
+  return decoder_input;
+}
 
 NAMESPACE_END

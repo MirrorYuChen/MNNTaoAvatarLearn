@@ -36,9 +36,6 @@ public:
   /// Fields are separated by space(s).
   explicit SymbolTable(const std::string &filename, bool is_file = true);
 
-  template <typename Manager>
-  SymbolTable(Manager *mgr, const std::string &filename);
-
   /// Return a string representation of this symbol table
   std::string ToString() const;
 

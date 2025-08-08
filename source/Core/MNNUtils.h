@@ -166,7 +166,7 @@ MNN::Express::VARP Repeat(MNNAllocator *allocator,
                           MNN::Express::VARP cur_encoder_out,
                           const std::vector<int32_t> &hyps_num_split);
 
-struct CopyableOrtValue {
+struct API CopyableOrtValue {
   MNN::Express::VARP value{nullptr};
 
   CopyableOrtValue() = default;

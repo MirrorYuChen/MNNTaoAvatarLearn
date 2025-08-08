@@ -82,20 +82,8 @@ void RecognizerConfig::Register(ParseOptions *po) {
                "Increasing value will lead to lower deletion at the cost"
                "of higher insertions. "
                "Currently only applicable for transducer models.");
-  po->Register("decoding-method", &decoding_method,
-               "decoding method,"
-               "now support greedy_search and modified_beam_search.");
   po->Register("temperature-scale", &temperature_scale,
                "Temperature scale for confidence computation in decoding.");
-  po->Register(
-      "rule-fsts", &rule_fsts,
-      "If not empty, it specifies fsts for inverse text normalization. "
-      "If there are multiple fsts, they are separated by a comma.");
-
-  po->Register(
-      "rule-fars", &rule_fars,
-      "If not empty, it specifies fst archives for inverse text normalization. "
-      "If there are multiple archives, they are separated by a comma.");
 }
 
 bool RecognizerConfig::Validate() const {
@@ -113,11 +101,8 @@ std::string RecognizerConfig::ToString() const {
   os << "max_active_paths=" << max_active_paths << ", ";
   os << "hotwords_score=" << hotwords_score << ", ";
   os << "hotwords_file=\"" << hotwords_file << "\", ";
-  os << "decoding_method=\"" << decoding_method << "\", ";
   os << "blank_penalty=" << blank_penalty << ", ";
-  os << "temperature_scale=" << temperature_scale << ", ";
-  os << "rule_fsts=\"" << rule_fsts << "\", ";
-  os << "rule_fars=\"" << rule_fars << "\")";
+  os << "temperature_scale=" << temperature_scale << "\")";
 
   return os.str();
 }

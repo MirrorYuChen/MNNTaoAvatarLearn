@@ -4,7 +4,7 @@
  * @Contact: 2458006366@qq.com
  * @Description: SymbolTable
  */
-#include "Core/SymbolTable.h"
+#include "Base/SymbolTable.h"
 
 #include <algorithm>
 #include <cassert>
@@ -160,14 +160,6 @@ SymbolTable::SymbolTable(const std::string &filename, bool is_file) {
   }
 }
 
-template <typename Manager>
-SymbolTable::SymbolTable(Manager *mgr, const std::string &filename) {
-  auto buf = ReadFile(mgr, filename);
-
-  std::istrstream is(buf.data(), buf.size());
-  Init(is);
-}
-
 void SymbolTable::Init(std::istream &is) {
   sym2id_ = ReadTokens(is, &id2sym_);
   is_bbpe_ = IsByteBPE(sym2id_);
@@ -258,15 +250,4 @@ std::string SymbolTable::DecodeByteBpe(const std::string &text) const {
   // TODO(fangjun): Filter invalid utf-8 sequences
   return ans;
 }
-
-#if __ANDROID_API__ >= 9
-template SymbolTable::SymbolTable(AAssetManager *mgr,
-                                  const std::string &filename);
-#endif
-
-#if __OHOS__
-template SymbolTable::SymbolTable(NativeResourceManager *mgr,
-                                  const std::string &filename);
-#endif
-
 NAMESPACE_END

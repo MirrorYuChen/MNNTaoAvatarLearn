@@ -9,6 +9,66 @@
 #include "Base/Logger.h"
 
 NAMESPACE_BEGIN
+DecoderResult::DecoderResult (
+  const DecoderResult &other)
+  : DecoderResult() {
+  *this = other;
+}
+
+DecoderResult &DecoderResult::operator= (
+  const DecoderResult &other) {
+  if (this == &other) {
+    return *this;
+  }
+
+  tokens = other.tokens;
+  num_trailing_blanks = other.num_trailing_blanks;
+
+  MNNAllocator *allocator;
+  if (other.decoder_out.get() != nullptr) {
+    decoder_out = Clone(allocator, other.decoder_out);
+  }
+
+  hyps = other.hyps;
+
+  frame_offset = other.frame_offset;
+  timestamps = other.timestamps;
+
+  ys_probs = other.ys_probs;
+  lm_probs = other.lm_probs;
+  context_scores = other.context_scores;
+
+  return *this;
+}
+
+
+DecoderResult::DecoderResult (
+  DecoderResult &&other) noexcept
+  : DecoderResult() {
+  *this = std::move(other);
+}
+
+DecoderResult &DecoderResult::operator= (
+  DecoderResult &&other) noexcept {
+  if (this == &other) {
+    return *this;
+  }
+
+  tokens = std::move(other.tokens);
+  num_trailing_blanks = other.num_trailing_blanks;
+  decoder_out = std::move(other.decoder_out);
+  hyps = std::move(other.hyps);
+
+  frame_offset = other.frame_offset;
+  timestamps = std::move(other.timestamps);
+
+  ys_probs = std::move(other.ys_probs);
+  lm_probs = std::move(other.lm_probs);
+  context_scores = std::move(other.context_scores);
+
+  return *this;
+}
+
 MNNConfig getSessionOptions (int32_t num_threads) {
   MNN::ScheduleConfig config;
   config.type = MNN_FORWARD_CPU;
@@ -24,19 +84,20 @@ MNNConfig getSessionOptions (int32_t num_threads) {
 
 Model::Model (const ModelConfig &cfg) : cfg_(cfg),
                                         sess_opts_(getSessionOptions(cfg.num_threads)),
-                                        allocator_{} {
-  {
+                                        allocator_{} { {
     auto buf = ReadFile(cfg.encoder);
     InitEncoder(buf.data(), buf.size());
-  }
-  {
+  } {
     auto buf = ReadFile(cfg.decoder);
     InitDecoder(buf.data(), buf.size());
-  }
-  {
+  } {
     auto buf = ReadFile(cfg.joiner);
     InitJoiner(buf.data(), buf.size());
   }
+}
+
+std::unique_ptr<Model> Model::Create(const ModelConfig &cfg) {
+  return std::make_unique<Model>(cfg);
 }
 
 Model::~Model () = default;

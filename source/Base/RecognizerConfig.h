@@ -74,18 +74,16 @@ struct API RecognizerConfig {
   explicit RecognizerConfig(
     FeatureExtractorConfig feature_extractor_config,
     ModelConfig model_config,
-    EndpointConfig endpoint_config, const std::string &decoding_method,
+    EndpointConfig endpoint_config,
     bool enable_endpoint, int32_t max_active_paths,
     const std::string &hotwords_file, float hotwords_score,
     float blank_penalty, float temperature_scale,
     const std::string &rule_fsts, const std::string &rule_fars) :
     feature_extractor_config(std::move(feature_extractor_config)),
     model_config(std::move(model_config)), endpoint_config(std::move(endpoint_config)),
-    decoding_method(std::move(decoding_method)),
     enable_endpoint(enable_endpoint), max_active_paths(max_active_paths),
     hotwords_file(hotwords_file), hotwords_score(hotwords_score),
-    blank_penalty(blank_penalty), temperature_scale(temperature_scale),
-    rule_fsts(rule_fsts), rule_fars(rule_fars) {}
+    blank_penalty(blank_penalty), temperature_scale(temperature_scale) {}
 
   void Register(ParseOptions *po);
   bool Validate() const;
@@ -97,8 +95,6 @@ struct API RecognizerConfig {
   EndpointConfig endpoint_config;
   bool enable_endpoint = true;
 
-  std::string decoding_method = "greedy_search";
-
   // used only for modified_beam_search
   int32_t max_active_paths = 4;
 
@@ -109,12 +105,6 @@ struct API RecognizerConfig {
   float blank_penalty = 0.0;
 
   float temperature_scale = 2.0;
-
-  // If there are multiple rules, they are applied from left to right.
-  std::string rule_fsts;
-
-  // If there are multiple FST archives, they are applied from left to right.
-  std::string rule_fars;
 
   /// used only for modified_beam_search, if hotwords_buf is non-empty,
   /// the hotwords will be loaded from the buffered string instead of from the
