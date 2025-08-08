@@ -1,4 +1,4 @@
-  /*
+ /*
  * @Author: chenjingyu
  * @Date: 2025-08-07 17:05:52
  * @Contact: 2458006366@qq.com
@@ -8,8 +8,8 @@
 
 #include "Api.h"
 #include "Base/RecognizerConfig.h"
-#include "Core/MNNUtils.h"
 #include "Core/Hypothesis.h"
+#include "Core/MNNUtils.h"
 
 NAMESPACE_BEGIN
 struct API DecoderResult {
@@ -46,42 +46,44 @@ struct API DecoderResult {
 
 class API Model {
 public:
-  explicit Model (const ModelConfig &cfg);
-  ~Model ();
+  explicit Model(const ModelConfig &cfg);
+  ~Model();
 
   static std::unique_ptr<Model> Create(const ModelConfig &cfg);
 
-  [[nodiscard]] std::vector<MNN::Express::VARP> StackStates (
-    const std::vector<std::vector<MNN::Express::VARP> > &states) const;
+  [[nodiscard]] std::vector<MNN::Express::VARP>
+  StackStates(const std::vector<std::vector<MNN::Express::VARP>> &states) const;
 
-  [[nodiscard]] std::vector<std::vector<MNN::Express::VARP> > UnStackStates (
-    const std::vector<MNN::Express::VARP> &states) const;
+  [[nodiscard]] std::vector<std::vector<MNN::Express::VARP>>
+  UnStackStates(const std::vector<MNN::Express::VARP> &states) const;
 
-  std::vector<MNN::Express::VARP> GetEncoderInitStates ();
+  std::vector<MNN::Express::VARP> GetEncoderInitStates();
 
-  std::pair<MNN::Express::VARP, std::vector<MNN::Express::VARP> > RunEncoder (
-    MNN::Express::VARP features, std::vector<MNN::Express::VARP> states,
-    MNN::Express::VARP processed_frames);
+  std::pair<MNN::Express::VARP, std::vector<MNN::Express::VARP>>
+  RunEncoder(MNN::Express::VARP features,
+             std::vector<MNN::Express::VARP> states,
+             MNN::Express::VARP processed_frames);
 
-  MNN::Express::VARP RunDecoder (MNN::Express::VARP decoder_input);
+  MNN::Express::VARP RunDecoder(MNN::Express::VARP decoder_input);
 
-  MNN::Express::VARP RunJoiner (MNN::Express::VARP encoder_out, MNN::Express::VARP decoder_out);
+  MNN::Express::VARP RunJoiner(MNN::Express::VARP encoder_out,
+                               MNN::Express::VARP decoder_out);
 
-  [[nodiscard]] int32_t ContextSize () const { return context_size_; }
+  [[nodiscard]] int32_t ContextSize() const { return context_size_; }
 
-  [[nodiscard]] int32_t ChunkSize () const { return T_; }
+  [[nodiscard]] int32_t ChunkSize() const { return T_; }
 
-  [[nodiscard]]int32_t ChunkShift () const { return decode_chunk_len_; }
+  [[nodiscard]] int32_t ChunkShift() const { return decode_chunk_len_; }
 
-  [[nodiscard]]int32_t VocabSize () const { return vocab_size_; }
-  [[nodiscard]] MNNAllocator *Allocator () const { return allocator_; }
+  [[nodiscard]] int32_t VocabSize() const { return vocab_size_; }
+  [[nodiscard]] MNNAllocator *Allocator() const { return allocator_; }
 
 private:
-  void InitEncoder (void *model_data, size_t model_data_length);
+  void InitEncoder(void *model_data, size_t model_data_length);
 
-  void InitDecoder (void *model_data, size_t model_data_length);
+  void InitDecoder(void *model_data, size_t model_data_length);
 
-  void InitJoiner (void *model_data, size_t model_data_length);
+  void InitJoiner(void *model_data, size_t model_data_length);
 
 private:
   MNNEnv env_;
@@ -125,13 +127,13 @@ private:
   int32_t vocab_size_ = 0;
 };
 
-static MNN::Express::VARP BuildDecoderInput(Model *model,
-    const std::vector<DecoderResult> &results) {
+static MNN::Express::VARP
+BuildDecoderInput(Model *model, const std::vector<DecoderResult> &results) {
   int32_t batch_size = static_cast<int32_t>(results.size());
   int32_t context_size = model->ContextSize();
   std::array<int, 2> shape{batch_size, context_size};
-  MNN::Express::VARP decoder_input = MNNUtilsCreateTensor<int>(
-      model->Allocator(), shape.data(), shape.size());
+  MNN::Express::VARP decoder_input =
+      MNNUtilsCreateTensor<int>(model->Allocator(), shape.data(), shape.size());
   int *p = decoder_input->writeMap<int>();
 
   for (const auto &r : results) {
@@ -143,13 +145,13 @@ static MNN::Express::VARP BuildDecoderInput(Model *model,
   return decoder_input;
 }
 
-static MNN::Express::VARP BuildDecoderInput(
-  Model *model, const std::vector<Hypothesis> &hyps) {
+static MNN::Express::VARP
+BuildDecoderInput(Model *model, const std::vector<Hypothesis> &hyps) {
   int32_t batch_size = static_cast<int32_t>(hyps.size());
   int32_t context_size = model->ContextSize();
   std::array<int, 2> shape{batch_size, context_size};
-  MNN::Express::VARP decoder_input = MNNUtilsCreateTensor<int>(
-      model->Allocator(), shape.data(), shape.size());
+  MNN::Express::VARP decoder_input =
+      MNNUtilsCreateTensor<int>(model->Allocator(), shape.data(), shape.size());
   int *p = decoder_input->writeMap<int>();
 
   for (const auto &h : hyps) {

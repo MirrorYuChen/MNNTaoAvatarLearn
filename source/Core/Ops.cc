@@ -1,4 +1,4 @@
-  /*
+ /*
  * @Author: chenjingyu
  * @Date: 2025-08-07 17:21:53
  * @Contact: 2458006366@qq.com
@@ -15,8 +15,8 @@
 
 NAMESPACE_BEGIN
 template <typename T /*= float*/>
-std::vector<MNN::Express::VARP> Unbind(MNNAllocator *allocator, MNN::Express::VARP value,
-                               int32_t dim) {
+std::vector<MNN::Express::VARP> Unbind(MNNAllocator *allocator,
+                                       MNN::Express::VARP value, int32_t dim) {
   std::vector<int> shape = value->getInfo()->dim;
   assert(dim >= 0);
   assert(dim < static_cast<int32_t>(shape.size()));
@@ -28,14 +28,14 @@ std::vector<MNN::Express::VARP> Unbind(MNNAllocator *allocator, MNN::Express::VA
   }
 
   std::vector<int> ans_shape = shape;
-  ans_shape[dim] = 1;  // // Unlike torch, we keep the dim to 1
+  ans_shape[dim] = 1; // // Unlike torch, we keep the dim to 1
 
   // allocator tensors
   std::vector<MNN::Express::VARP> ans;
   ans.reserve(n);
   for (int32_t i = 0; i != n; ++i) {
-    MNN::Express::VARP t = MNNUtilsCreateTensor<T>(allocator, ans_shape.data(),
-                                               ans_shape.size());
+    MNN::Express::VARP t =
+        MNNUtilsCreateTensor<T>(allocator, ans_shape.data(), ans_shape.size());
     ans.push_back(std::move(t));
   }
 
@@ -58,23 +58,23 @@ std::vector<MNN::Express::VARP> Unbind(MNNAllocator *allocator, MNN::Express::VA
   return ans;
 }
 
-template std::vector<MNN::Express::VARP> Unbind<float>(MNNAllocator *allocator,
-                                               MNN::Express::VARP value,
-                                               int32_t dim);
+template std::vector<MNN::Express::VARP>
+Unbind<float>(MNNAllocator *allocator, MNN::Express::VARP value, int32_t dim);
 
-template std::vector<MNN::Express::VARP> Unbind<int>(MNNAllocator *allocator,
-                                                 MNN::Express::VARP value,
-                                                 int32_t dim);
+template std::vector<MNN::Express::VARP>
+Unbind<int>(MNNAllocator *allocator, MNN::Express::VARP value, int32_t dim);
 
-
-static bool Compare(const std::vector<int> &a,
-                    const std::vector<int> &b, int32_t skip_dim) {
-  if (a.size() != b.size()) return false;
+static bool Compare(const std::vector<int> &a, const std::vector<int> &b,
+                    int32_t skip_dim) {
+  if (a.size() != b.size())
+    return false;
 
   for (int32_t i = 0; i != static_cast<int32_t>(a.size()); ++i) {
-    if (i == skip_dim) continue;
+    if (i == skip_dim)
+      continue;
 
-    if (a[i] != b[i]) return false;
+    if (a[i] != b[i])
+      return false;
   }
 
   return true;
@@ -89,13 +89,13 @@ static void PrintShape(const std::vector<int> &a) {
 
 template <typename T /*=float*/>
 MNN::Express::VARP Cat(MNNAllocator *allocator,
-               const std::vector<MNN::Express::VARP > &values, int32_t dim) {
+                       const std::vector<MNN::Express::VARP> &values,
+                       int32_t dim) {
   if (values.size() == 1u) {
     return Clone(allocator, values[0]);
   }
 
-  std::vector<int> v0_shape =
-      values[0]->getInfo()->dim;
+  std::vector<int> v0_shape = values[0]->getInfo()->dim;
 
   int total_dim = v0_shape[dim];
 
@@ -127,12 +127,11 @@ MNN::Express::VARP Cat(MNNAllocator *allocator,
   auto leading_size = static_cast<int32_t>(std::accumulate(
       v0_shape.begin(), v0_shape.begin() + dim, 1, std::multiplies<int>()));
 
-  auto trailing_size = static_cast<int32_t>(
-      std::accumulate(v0_shape.begin() + dim + 1, v0_shape.end(), 1,
-                      std::multiplies<int>()));
+  auto trailing_size = static_cast<int32_t>(std::accumulate(
+      v0_shape.begin() + dim + 1, v0_shape.end(), 1, std::multiplies<int>()));
 
-  MNN::Express::VARP ans = MNNUtilsCreateTensor<T>(allocator, ans_shape.data(),
-                                               ans_shape.size());
+  MNN::Express::VARP ans =
+      MNNUtilsCreateTensor<T>(allocator, ans_shape.data(), ans_shape.size());
   T *dst = ans->writeMap<T>();
 
   for (int32_t i = 0; i != leading_size; ++i) {
@@ -149,12 +148,12 @@ MNN::Express::VARP Cat(MNNAllocator *allocator,
   return ans;
 }
 
-template MNN::Express::VARP Cat<float>(MNNAllocator *allocator,
-                               const std::vector<MNN::Express::VARP > &values,
-                               int32_t dim);
+template MNN::Express::VARP
+Cat<float>(MNNAllocator *allocator,
+           const std::vector<MNN::Express::VARP> &values, int32_t dim);
 
-template MNN::Express::VARP Cat<int>(MNNAllocator *allocator,
-                                 const std::vector<MNN::Express::VARP > &values,
-                                 int32_t dim);
+template MNN::Express::VARP
+Cat<int>(MNNAllocator *allocator, const std::vector<MNN::Express::VARP> &values,
+         int32_t dim);
 
 NAMESPACE_END

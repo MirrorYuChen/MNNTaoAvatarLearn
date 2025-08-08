@@ -1,4 +1,4 @@
-  /*
+ /*
  * @Author: chenjingyu
  * @Date: 2025-08-07 17:21:14
  * @Contact: 2458006366@qq.com
@@ -20,8 +20,8 @@ NAMESPACE_BEGIN
  * @return Return a list of tensors
  */
 template <typename T = float>
-std::vector<MNN::Express::VARP> Unbind(MNNAllocator *allocator, MNN::Express::VARP value,
-                               int32_t dim);
+std::vector<MNN::Express::VARP> Unbind(MNNAllocator *allocator,
+                                       MNN::Express::VARP value, int32_t dim);
 
 /** Cat a list of tensors along the given dim.
  *
@@ -34,5 +34,6 @@ std::vector<MNN::Express::VARP> Unbind(MNNAllocator *allocator, MNN::Express::VA
  */
 template <typename T = float>
 MNN::Express::VARP Cat(MNNAllocator *allocator,
-               const std::vector<MNN::Express::VARP> &values, int32_t dim);
+                       const std::vector<MNN::Express::VARP> &values,
+                       int32_t dim);
 NAMESPACE_END
