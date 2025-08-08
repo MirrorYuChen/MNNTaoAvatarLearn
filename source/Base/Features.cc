@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "Base/Resample.h"
+#include "Base/Logger.h"
 #include "kaldi-native-fbank/csrc/online-feature.h"
 
 NAMESPACE_BEGIN

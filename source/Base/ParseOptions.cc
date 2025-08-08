@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iomanip>
 
+#include "Base/Logger.h"
 #include "Utils/TextUtils.h"
 
 NAMESPACE_BEGIN
@@ -575,6 +576,35 @@ void ParseOptions::RegisterSpecific(const std::string &name,
   doc_map_[idx] =
       DocInfo(name, doc + " (bool, default = " + ((*b) ? "true)" : "false)"),
               is_standard);
+}
+
+// old-style, used for registering application-specific parameters
+template <typename T>
+void ParseOptions::RegisterTmpl(const std::string &name, T *ptr,
+                                const std::string &doc) {
+  if (other_parser_ == nullptr) {
+    this->RegisterCommon(name, ptr, doc, false);
+  } else {
+    CHECK(prefix_ != "")
+        << "prefix: " << prefix_ << "\n"
+        << "Cannot use empty prefix when registering with prefix.";
+    std::string new_name = prefix_ + '.' + name; // name becomes prefix.name
+    other_parser_->Register(new_name, ptr, doc);
+  }
+}
+
+// does the common part of the job of registering a parameter
+template <typename T>
+void ParseOptions::RegisterCommon(const std::string &name, T *ptr,
+                                  const std::string &doc, bool is_standard) {
+  CHECK(ptr);
+  std::string idx = name;
+  NormalizeArgName(&idx);
+  if (doc_map_.find(idx) != doc_map_.end()) {
+    LogError("Registering option twice, ignoring second time: {}", name);
+  } else {
+    this->RegisterSpecific(name, idx, ptr, doc, is_standard);
+  }
 }
 
 // instantiate templates

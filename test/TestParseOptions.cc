@@ -43,7 +43,7 @@ Usage:
 
   for (int32_t i = 1; i <= po.NumArgs(); i++) {
     const std::string wav_filename = po.GetArg(i);
-    LogInfo("wave filename: {}", wav_filename);
+    printf("wave filename: %s", wav_filename.c_str());
   }
 
   return 0;
