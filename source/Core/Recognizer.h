@@ -1,4 +1,4 @@
-   /*
+/*
  * @Author: chenjingyu
  * @Date: 2025-08-08 09:50:56
  * @Contact: 2458006366@qq.com
@@ -12,11 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "Base/Endpoint.h"
-#include "Base/Features.h"
 #include "Base/ParseOptions.h"
 #include "Base/RecognizerConfig.h"
-#include "Core/Model.h"
 #include "Core/Stream.h"
 
 NAMESPACE_BEGIN
@@ -24,7 +21,7 @@ class RecognizerImpl;
 
 class API Recognizer {
 public:
-  explicit Recognizer(const RecognizerConfig& config);
+  explicit Recognizer(const RecognizerConfig &config);
 
   ~Recognizer();
 
