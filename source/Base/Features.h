@@ -12,8 +12,7 @@
 #include <string>
 #include <vector>
 
-#include "Base/ParseOptions.h"
-#include "Base/RecognizerConfig.h"
+#include "RecognizerConfig.h"
 
 NAMESPACE_BEGIN
 class FeatureExtractor {

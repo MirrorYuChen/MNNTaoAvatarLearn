@@ -12,8 +12,7 @@
 #include <string>
 #include <vector>
 
-#include "Base/RecognizerConfig.h"
-#include "Core/Stream.h"
+#include "RecognizerConfig.h"
 
 NAMESPACE_BEGIN
 class RecognizerImpl;

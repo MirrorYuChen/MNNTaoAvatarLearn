@@ -4,8 +4,8 @@
  * @Contact: 2458006466@qq.com
  * @Description: TestParseOptions
  */
-#include "Base/ParseOptions.h"
-#include "Base/RecognizerConfig.h"
+#include "ParseOptions.h"
+#include "RecognizerConfig.h"
 #include <sstream>
 
 using namespace NAMESPACE;

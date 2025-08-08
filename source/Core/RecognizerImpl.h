@@ -17,8 +17,8 @@
 #include <utility>
 #include <vector>
 
+#include "Recognizer.h"
 #include "Base/Endpoint.h"
-#include "Core/Recognizer.h"
 #include "Core/Stream.h"
 #include "Base/SymbolTable.h"
 #include "Core/GreedySearchDecoder.h"

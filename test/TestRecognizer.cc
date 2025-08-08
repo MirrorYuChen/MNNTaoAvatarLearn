@@ -4,19 +4,14 @@
  * @Contact: 2458006366@qq.com
  * @Description: TestRecognizer
  */
-#include "Core/Recognizer.h"
-#include "Base/ParseOptions.h"
+#include "Recognizer.h"
+#include "ParseOptions.h"
 #include "Base/WaveReader.h"
 
 #include <iomanip>
+#include <iostream>
 
 using namespace NAMESPACE;
-
-typedef struct {
-  std::unique_ptr<Stream> stream;
-  float duration;
-  float elapsed_seconds;
-} StreamWrapper;
 
 int main(int argc, char *argv[]) {
 const char *kUsageMessage = R"usage(

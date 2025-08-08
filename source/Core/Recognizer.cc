@@ -4,7 +4,7 @@
  * @Contact: 2458006366@qq.com
  * @Description: Recognizer
  */
-#include "Core/Recognizer.h"
+#include "Recognizer.h"
 
 #include <algorithm>
 #include <cassert>
