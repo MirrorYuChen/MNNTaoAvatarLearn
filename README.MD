@@ -105,6 +105,7 @@
 >> mkdir build && cd build && cmake .. && make -j 16
 ```
 * (4) 测试效果
+
 &emsp;所有MNNTaoAvatar的模型都可以在这个地址找到：https://modelscope.cn/collections/TaoAvatar-68d8a46f2e554a
   - (a) 测试MNN-TTS模块：先下载模型，对应地址：[bert-vits2-MNN](https://modelscope.cn/models/MNN/bert-vits2-MNN)，我这里将其解压之后，放到了项目底下的data/tts路径，具体看代码
 ```bash
