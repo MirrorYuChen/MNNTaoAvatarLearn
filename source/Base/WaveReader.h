@@ -1,4 +1,4 @@
-   /*
+/*
  * @Author: chenjingyu
  * @Date: 2025-08-08 13:09:45
  * @Contact: 2458006366@qq.com
@@ -21,10 +21,10 @@ NAMESPACE_BEGIN
 
     @return Return wave samples normalized to the range [-1, 1).
  */
-API std::vector<float> ReadWave (const std::string &filename, int32_t *sampling_rate,
-                                 bool *is_ok);
+API std::vector<float> ReadWave(const std::string &filename,
+                                int32_t *sampling_rate, bool *is_ok);
 
-API std::vector<float> ReadWave (std::istream &is, int32_t *sampling_rate,
-                                 bool *is_ok);
+API std::vector<float> ReadWave(std::istream &is, int32_t *sampling_rate,
+                                bool *is_ok);
 
 NAMESPACE_END

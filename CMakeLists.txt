@@ -39,6 +39,8 @@ include_directories(
   ${SRC_DIR}
   ${3RD_DIR}/spdlog
   ${3RD_DIR}/nlohmann
+  ${3RD_DIR}/miniaudio
+  ${3RD_DIR}/glm
 )
 
 # src files
@@ -75,6 +77,7 @@ set(TEST_LIST
   TestMnnASRSession
   TestMnnLLMSession
   TestMnnTTSSession
+  TestMnnA2BSSession
 )
 
 foreach(TEST ${TEST_LIST})
