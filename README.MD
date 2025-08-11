@@ -220,7 +220,7 @@ Audio format: 2, Channels: 1, Sample rate: 44100
 &emsp;注意，这里A2BS不知道结果对不对，等后面NNR模块开源才能知晓。
 
 ## 3.下一步计划
-* A2BS模块结果是否正确需要移植完[NNR模块](https://github.com/alibaba/MNN/issues/361)才能验证，但是NNR模块没有开源，所以就这样吧，懒得整了。
+* A2BS模块结果是否正确需要移植完[NNR模块](https://github.com/alibaba/MNN/issues/3617)才能验证，但是NNR模块没有开源，所以就这样吧，懒得整了。
 
 ## 4.参考资料
 * [1] [MNN](https://github.com/alibaba/MNN)
