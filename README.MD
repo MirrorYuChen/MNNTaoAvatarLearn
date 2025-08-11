@@ -10,7 +10,7 @@
   - MNN-TTS(随心所欲合成语音)：TTS模型，让你的数字人发声自然真实
   - MNN-A2BS(声音驱动表情动作)：A2BS技术，通过声音自动生成数字人丰富的面部表情和动作
   - MNN-NNR(实时神经渲染)：让数字人表情细腻逼真，互动感更强
-&emsp;目前移植了三个模块：MNN-LLM对应MnnLLMSession，Sharpa-MNN-ASR对应MnnASRSession和MNN-TTS对应MnnTTSSession
+&emsp;目前移植了三个模块：MNN-LLM对应MnnLLMSession，Sharpa-MNN-ASR对应MnnASRSession和MNN-TTS对应MnnTTSSession，其中ASR模块是对原始[sherpa-mnn](https://github.com/alibaba/MNN/tree/master/apps/frameworks/sherpa-mnn)裁剪后的版本，这个比较费事，其余两个是直接抄过来的，主要是做了一些代码整理，后面两个模块A2BS可以直接抄过来就行了，但是结果是否正确需要移植NNR模块，然而NNR没有开源，所以没有往下整的必要，这个就先这样吧。
 
 
 ## 2.使用方法
@@ -198,8 +198,8 @@ Assistant: 我是来自阿里云的通义千问，是一个预训练语言模型
 ```
 
 ## 3.下一步计划
-* [x] 移植MNN-A2BS
-* [x] 移植MNN-NNR
+* A2BS模块直接可以抄过来，但是结果是否正确需要移植完NNR模块才能验证
+* 但是，NNR模块没有开源，所以就这样吧，懒得整了。
 
 ## 4.参考资料
 * [1] [MNN](https://github.com/alibaba/MNN)
