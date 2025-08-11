@@ -31,6 +31,13 @@
 ├── cmake
 │   └── kaldi-native-fbank.cmake
 ├── data
+│   ├── a2bs
+│   │   ├── README.md
+│   │   ├── audio2verts.mnn
+│   │   ├── body_converter.mnn
+│   │   ├── body_params.bin
+│   │   ├── configuration.json
+│   │   └── idle_speech_slices.json
 │   ├── asr
 │   │   ├── 1.wav
 │   │   ├── README.md
@@ -197,6 +204,19 @@ User: 你是什么大模型
 
 Assistant: 我是来自阿里云的通义千问，是一个预训练语言模型，可以帮助提供文本生成、翻译、摘要、问答等服务。
 ```
+- (d) 测试MNN-A2BS模块：先下载模型，对应地址：[UniTalker-MNN](https://modelscope.cn/models/MNN/UniTalker-MNN)，我这里将其解压之后，放到了项目底下的data/a2bs路径，具体看代码
+```bash
+>> ./TestMnnA2BSSession
+The device supports: i8sdot:0, fp16:0, i8mm: 0, sve2: 0, sme2: 0
+[2025-08-11 11:15:56.179] [mirror] [info] [AudioToFrameBlendShape.cc:72] ### audio_to_flame_blend_shape load memory increase : 364.81076
+[2025-08-11 11:15:56.179] [mirror] [info] [AudioTo3dgsBlendShape.cc:27] A2BSService ParseInputsFromJson execution time: 0 ms
+Load a2bs recources successed.
+Audio format: 2, Channels: 1, Sample rate: 44100
+[2025-08-11 11:15:56.585] [mirror] [info] [AudioToFrameBlendShape.cc:108] ### audio2verts forward memory increase : 35.944977
+[2025-08-11 11:15:56.585] [mirror] [info] [AudioTo3dgsBlendShape.cc:70] Audio2BS timecost: 405.000000 ms, audio_duration: 2799.977295 ms, rtf:(0.144644+0.144644)
+```
+
+&emsp;注意，这里A2BS不知道结果对不对，等后面NNR模块开源才能知晓。
 
 ## 3.下一步计划
 * A2BS模块结果是否正确需要移植完[NNR模块](https://github.com/alibaba/MNN/issues/361)才能验证，但是NNR模块没有开源，所以就这样吧，懒得整了。
